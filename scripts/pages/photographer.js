@@ -3,7 +3,8 @@ import { displayModal, closeModal } from '../utils/contactForm';
 import { getPhotographers, getProductPhotographers } from '../utils/api';
 import {
   photographerFactory,
-  productPhotographerFactory
+  productPhotographerFactory,
+  getProductSort
 } from '../factories/photographer';
 
 /**
@@ -47,6 +48,7 @@ const getProductPhotograph = (data) => {
 (async () => {
   const photographers = await getPhotographers();
   const photograph = await getPhotograph(photographers);
+  getProductSort();
   const media = await getProductPhotographers();
   const productPhotograph = await getProductPhotograph(media);
   displayPhotograph(photograph);

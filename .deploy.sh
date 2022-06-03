@@ -4,7 +4,7 @@
 set -e
 
 # build
-npm run build
+npm run build --base '/p6-vitejs/'
 
 # navigate into the build output directory
 cd dist

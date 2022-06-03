@@ -1,0 +1,32 @@
+.dropdown {
+  position: relative;
+  display: flex;
+  align-items: start;
+  width: 200px;
+  .dropdown-toggle {
+    width: 9rem;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 700;
+    svg {
+      width: 24px;
+      height: 24px;
+      stroke: black;
+    }
+  }
+  .dropdown-menu {
+    list-style: none;
+    padding: 1rem;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 10rem;
+    background-color: #901c1c;
+    color: #fff;
+    // display: none;
+    .option {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #fff;
+    }
+  }
+}

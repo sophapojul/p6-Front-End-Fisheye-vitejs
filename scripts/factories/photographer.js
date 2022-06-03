@@ -1,3 +1,4 @@
+// @ts-nocheck
 let WindowObjectReference = null;
 /**
  * If the window is already open, focus on it. If it's not open, open it
@@ -28,27 +29,26 @@ function openWindow(strUrl, val) {
  * @param   {Element} tagParent - the parent element of the element to be created
  * @param   {String}  tagName - the name of the tag you want to create.
  * @param   {String}  [text=''] - the text content of the element
- * @param   {String}  [className=''] - the class name of the element
  * @param   {Object}  [attributValue={}] - an object containing the attributes and their values
- * @param   {string}  [attributValue.src] - source of the image
+ * @param   {string}  [attributValue.src] - source of the media file
  * @param   {string}  [attributValue.alt] - alternative text of the image
  * @param   {string}  [attributValue.role] - Aria role
+ * @param   {string}  [attributValue.tabindex] - tabindex
+ * @param   {string}  [attributValue.class] - the class name of the element
+ * @param   {string}  [attributValue.type] -
+ * @param   {string}  [attributValue.aria-haspopup] -
+ * @param   {string}  [attributValue.ariaExpanded] -
+ * @param   {string}  [attributValue.name] - element name
+ * @param   {string}  [attributValue.value] - element value
  * @param   {Boolean} [attributValue.controls] - to allow the user to control video playback, including volume, seeking, and pause/resume playback.
  * @param   {*}  [attributValue.id] - Element's id
  */
-function addElement(
-  tagParent,
-  tagName,
-  text = '',
-  className = '',
-  attributValue = {}
-) {
+function addElement(tagParent, tagName, text = '', attributValue = {}) {
   const elt = document.createElement(tagName);
   elt.textContent = text;
   Object.entries(attributValue).forEach(([key, value]) =>
     elt.setAttribute(key, value)
   );
-  elt.className = className;
   return tagParent.appendChild(elt);
 }
 /**
@@ -71,11 +71,19 @@ function photographerFactory(data) {
    */
   function getUserCardDOM() {
     const article = document.createElement('article');
-    addElement(article, 'img', null, 'article-img', { src: picture, id });
-    addElement(article, 'h2', name, 'article-title');
-    addElement(article, 'div', `${city}, ${country}`, 'article-location');
-    addElement(article, 'p', tagline, 'article-tagline');
-    addElement(article, 'span', `${price}€/jour`, 'article-price');
+    addElement(article, 'img', null, {
+      src: picture,
+      id,
+      class: 'article-img'
+    });
+    addElement(article, 'h2', name, { class: 'article-title' });
+    addElement(article, 'div', `${city}, ${country}`, {
+      class: 'article-location'
+    });
+    addElement(article, 'p', tagline, { class: 'article-tagline' });
+    addElement(article, 'span', `${price}€/jour`, {
+      class: 'article-price'
+    });
     const img = article.firstElementChild;
     const photographPathName = 'photographer.html';
     img.addEventListener('click', () => {
@@ -86,14 +94,18 @@ function photographerFactory(data) {
   }
   function getOneUserCardDOM() {
     const section = document.createElement('section');
-    const div = addElement(section, 'div', null, 'bio');
-    addElement(div, 'h2', name, 'section-title');
-    addElement(div, 'div', `${city}, ${country}`, 'section-location');
-    addElement(div, 'q', tagline, 'section-tagline');
-    addElement(section, 'button', 'Contactez-moi', 'contact_button', {
+    const div = addElement(section, 'div', null, { class: 'bio' });
+    addElement(div, 'h2', name, { class: 'section-title' });
+    addElement(div, 'div', `${city}, ${country}`, {
+      class: 'section-location'
+    });
+    addElement(div, 'q', tagline, { class: 'section-tagline' });
+    addElement(section, 'button', 'Contactez-moi', {
+      class: 'contact_button',
       role: 'button'
     });
-    addElement(section, 'img', null, 'section-img', {
+    addElement(section, 'img', null, {
+      class: 'section-img',
       src: picture,
       alt: name,
       id
@@ -107,7 +119,62 @@ function photographerFactory(data) {
   };
 }
 const main = document.querySelector('main');
-const mainSection = addElement(main, 'section', null, 'photograph-product');
+const divDropdown = addElement(main, 'div', null, { class: 'dropdown' });
+const mainSection = addElement(main, 'section', null, {
+  class: 'photograph-product'
+});
+function getProductSort() {
+  const button = addElement(divDropdown, 'button', 'Trier par', {
+    class: 'dropdown-toggle',
+    type: 'button',
+    'aria-haspopup': 'true'
+  });
+  // addElement(button, 'i', '', { class: 'fa fa-angle-right' });
+  const svg = addElement(button, 'svg', '', {
+    width: '16',
+    height: '11',
+    viewBox: '0 0 16 11',
+    fill: 'none',
+    xmlns: 'http://www.w3.org/2000/svg'
+  });
+  addElement(svg, 'path', '', {
+    d: 'M1.88 10.5466L8 4.43996L14.12 10.5466L16 8.66663L8 0.66663L1.64355e-07 8.66663L1.88 10.5466Z',
+    fill: 'green'
+  });
+  const menuDropdown = addElement(divDropdown, 'ul', null, {
+    class: 'dropdown-menu active',
+    role: 'listbox',
+    'aria-expanded': 'false'
+  });
+  addElement(menuDropdown, 'li', 'Popularité', {
+    class: 'option',
+    id: 'option',
+    role: 'option',
+    tabindex: '0'
+  });
+  addElement(menuDropdown, 'li', 'Date', {
+    class: 'option',
+    id: 'option',
+    role: 'option',
+    tabindex: '0'
+  });
+  addElement(menuDropdown, 'li', 'Titre', {
+    class: 'option',
+    id: 'option',
+    role: 'option',
+    tabindex: '0'
+  });
+  // const select = addElement(customSelect, 'select', null, 'product-sort', {
+  //   name: 'product-sort',
+  //   id: 'product-sort',
+  //   role: 'menu'
+  // });
+  // addElement(select, 'option', 'Trier par', '', { value: 'Trier par' });
+  // addElement(select, 'option', 'Popularité', '', { value: 'Popular' });
+  // addElement(select, 'option', 'Date', '', { value: 'Date' });
+  // addElement(select, 'option', 'Titre', '', { value: 'Title' });
+  // return select;
+}
 /**
  * It takes in an object, and returns an object with a method that returns a DOM element
  * @param   {Object} data - This is the data that we're going to use to create the productPhotographerFactory.
@@ -124,23 +191,30 @@ function productPhotographerFactory(data) {
    * @returns  {HTMLElement} The article element.
    */
   function getProductUserCardDOM() {
-    const article = addElement(mainSection, 'article', null, 'product');
+    const article = addElement(mainSection, 'article', null, {
+      class: 'product'
+    });
     if (data.video) {
-      addElement(article, 'video', null, 'product-video', {
+      addElement(article, 'video', null, {
+        class: 'product-video',
         controls: true,
         src: media
       });
     } else {
-      addElement(article, 'img', null, 'product-img', {
+      addElement(article, 'img', null, {
+        class: 'product-img',
         src: product,
         alt: title,
         id
       });
     }
-    const footer = addElement(article, 'footer', null, 'product-footer');
-    addElement(footer, 'p', title, 'product-title');
-    addElement(footer, 'span', likes, 'product-likes');
-    addElement(footer, 'img', null, 'product-heart', {
+    const footer = addElement(article, 'footer', null, {
+      class: 'product-footer'
+    });
+    addElement(footer, 'p', title, { class: 'product-title' });
+    addElement(footer, 'span', likes, { class: 'product-likes' });
+    addElement(footer, 'img', null, {
+      class: 'product-heart',
       role: 'img',
       src: heart
     });
@@ -148,4 +222,10 @@ function productPhotographerFactory(data) {
   }
   return { data, getProductUserCardDOM };
 }
-export { photographerFactory, addElement, productPhotographerFactory };
+
+export {
+  photographerFactory,
+  addElement,
+  productPhotographerFactory,
+  getProductSort
+};
