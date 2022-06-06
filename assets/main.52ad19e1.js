@@ -1,0 +1,1 @@
+import{g as e,p}from"./api.ab093bd4.js";const h=async o=>{const r=document.querySelector(".photographer_section");o.forEach(t=>{const a=p(t).getUserCardDOM();r.appendChild(a)})};(async()=>{const o=await e();h(o)})();
