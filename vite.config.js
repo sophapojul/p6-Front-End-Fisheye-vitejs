@@ -5,7 +5,7 @@ const root = resolve(__dirname, '');
 const outDir = resolve(__dirname, 'dist');
 
 export default defineConfig({
-  base: '/p6-vitejs/',
+  base: '/p6-Front-End-Fisheye-vitejs/',
   build: {
     outDir,
     emptyOutDir: true,
