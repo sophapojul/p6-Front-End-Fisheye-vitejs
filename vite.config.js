@@ -5,6 +5,7 @@ const root = resolve(__dirname, '');
 const outDir = resolve(__dirname, 'dist');
 
 export default defineConfig({
+  base: '/p6-vitejs/',
   build: {
     outDir,
     emptyOutDir: true,
